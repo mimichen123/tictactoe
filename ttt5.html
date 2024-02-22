@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<!--
+    Student Name: Mimi Chen
+    File Name: ttt5.html
+    Date: 2/22/2024
+-->
+<html lang="en">
+<head>
+    <title>My First Tic Tac Toe Game for DGMD E-28</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style type="text/css">
+
+        body,html {
+            font-size: 30px;
+            text-align: center;
+            
+        }
+
+        h1 {
+            text-align: center;
+        }
+       
+        #tic_tac_toe_board {
+            display: inline-grid;            
+            grid-template-columns: auto auto auto;
+            grid-gap: 20px;
+        }
+
+        .square {            
+            border: 2px solid #000;
+            width: 100px;   
+            height: 100px;         
+            padding: 15px;
+            margin-right: 10px;               
+            text-align: center;                   
+            display: inline-block;
+        }
+
+        .square:hover {
+            background-color: green;
+            color: #fff;            
+        }
+
+        .game_result {
+            border: 5px dashed #883535;
+            width: 30%;
+            margin: auto;
+        }
+
+        .theTile {
+            border: 2px solid #000;
+            padding: 15px;
+            width:100px
+            text-align: center;
+            display: inline-block;
+            margin-right: 20px;
+        }
+
+        #result {
+            font-size: 25px;
+            margin-top: 15px;
+            color: green;
+        }
+
+      
+
+    </style>
+    <script>
+
+        turn = ["X","O"];
+        start = Math.round(Math.random());      
+
+        
+        window.onload=function(){
+            result = document.getElementById("result");
+
+            for (i=0; i<=8; i++){
+            document.querySelector(".tile" +i).addEventListener("click",squareNumber);                        
+
+            result.innerHTML = "It is " + getTurn() +"'s turn";
+        }
+            document.getElementById("btnStart").addEventListener("click",startGame);
+        };        
+        
+          
+        function getTurn() {
+            return turn[start];
+        }        
+        
+        
+        function squareNumber()
+        {
+            
+            addClass = this.className;
+            index = addClass.indexOf("tile")+4;
+            number = parseInt(addClass.substring(index));
+            
+            if (this.innerHTML === "X" || this.innerHTML === "O") {
+                alert ("You already played this square, please find an empty one");
+                return;
+            }
+
+            x_or_o = getTurn();  
+            this.innerHTML = getTurn();
+
+            result.innerHTML = "It is " + turn[1-start] +"'s turn";
+            alert("You played square # "+ number)
+            
+            start = 1 - start;
+            
+            newMoves();
+        }
+        
+        function startGame(){
+            for(i=0; i<=8; i++){
+                restart = document.querySelector(".tile" +i);
+                restart.innerHTML = "";          
+                result2.innerHTML = "";      
+                restart.addEventListener("click",squareNumber);
+            }          
+        }
+
+        function newMoves(){                  
+            winConditions = [
+            [0,1,2],
+            [3,4,5],
+            [6,7,8],
+            [0,3,6],
+            [1,4,7],
+            [2,5,8],
+            [0,4,8],
+            [2,4,6]
+    ];
+            tiles_array =[];            
+            for(i=0; i<=8; i++){
+            tiles_array.push(i);            
+            }
+            console.log(tiles_array);
+
+            
+            /*
+            for(i=0; i<9; i++){
+            sequence = [Array.from(document.querySelectorAll('.tile[i]')).map(square=>square.innerHTML || "-").join(''),            
+        ];}
+        */    
+            sequence = [Array.from(document.querySelectorAll('.tile0,.tile1,.tile2')).map(square=>square.innerHTML || "-").join(''),
+            Array.from(document.querySelectorAll('.tile3,.tile4,.tile5')).map(square=>square.innerHTML || "-").join(''),
+            Array.from(document.querySelectorAll('.tile6,.tile7,.tile8')).map(square=>square.innerHTML || "-").join(''),        
+        ];
+        
+            console.log(sequence);
+                      
+            /*new array with moves with the current x or o value that is inside the div with id=sq0*/
+         
+        moves = tiles_array.map(i => 
+            {
+                tileContent = document.getElementById("sq"+i).innerHTML;
+         
+                if (tileContent === "") {
+                    return "-";
+                } else {
+                    return tileContent;
+                }         
+        });
+   
+        winner = false;        
+        for (positions of winConditions){
+            [a,b,c] = positions;
+            if(moves[a] === moves[b] && moves[a] === moves[c] && moves[a]!=="-"){
+                winner=true;
+                break;
+        }
+    }
+/*
+        for (i=0; i<3; i++){
+            positions = winConditions[i];
+            [a,b,c] = positions;
+            //compare winconditions,look for hyphens
+            if(moves[a] === moves[b] && moves[a] === moves[c] && moves[a]!=="-"){
+                winner=true;
+                break;
+            }        
+*/  
+
+        stalemate = true;
+        for(i=0; i<3; i++){            
+            if(sequence[i].includes("-")){
+                stalemate = false;
+                break;
+            }
+        }
+
+        if(winner){
+            result2.innerHTML = turn[1-start];
+            alert("YOU WON!!!!!");            
+            stopGame();
+       
+        } else if(stalemate){
+            
+            result2.innerHTML = "Stalemate!!!!";
+            stopGame();
+
+        }else{
+            result.innerHTML = "It is " +getTurn() + "'s turn next";
+        }
+        
+            console.log(moves);   
+            return moves;    
+          
+        }
+    
+function stopGame(){
+    for(i=0; i<=8; i++){
+        document.querySelector(".tile"+ i).removeEventListener("click",squareNumber);
+    }
+}
+
+                /*
+        moves = divs.map(id=>document.getElementById(id).innerHTinML)
+        document.write(contents.join(''))
+*/ 
+
+
+        
+    </script>
+</head>
+
+<body >
+
+    <header>
+        <h1>Let's Play Tic Tac Toe!</h1>       
+    </header>
+
+<div id="next_turn"></div>  
+<input type="button" value ="START GAME" id="btnStart">
+
+<div class="game_result" id="result"></div>  </div>         
+<br><br><br>
+
+
+<div id="tic_tac_toe_board"> 
+   <script>
+        const NUM_SQUARES = 9;
+        
+        for (i=0; i<NUM_SQUARES; i++)
+        
+        {
+            id="sq" +i;                        
+            tile_num="tile" +i;
+            document.write("<div class='square " +tile_num + " 'id='"+ id + "'></div>");
+        }
+        
+    </script>
+</div>
+    <br /><br />
+    
+    <div class="game_result">
+        <div>And the winner is...</div>
+    <div class="ttt_result" id="result2"></div>   
+        
+   
+    
+   
+    
+</body>
+
+</html>
