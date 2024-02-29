@@ -1,0 +1,82 @@
+<html>
+    <title>Joe's Hotdogs</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <head></head>
+    <body>
+        <script>
+
+        // associate array of items and prices            
+      //one way 
+
+        var menu =[]
+            menu["hotdog"] = 4
+            menu["fries"] = 3.5
+            menu["soda"] = 1.5
+            menu["sauerkraut"] =1
+/*        
+        // a simple object
+
+        var menu = {
+                hotdogs: 4,
+                fries: 3.5,
+                soda: 1.5,
+                sauerkraut: 1
+            }
+*/
+
+        // JSON object 
+        var joesMenu =
+            {
+                "hotdog" : 4,
+                "fries" : 3.5,
+                "soda" : 1.5,
+                "sauerkraut" : 1
+            }
+        
+        // Function to display using the JSON object
+        function displayJSON() {
+            document.write("Display using JSON Object"+"<br>"+"Joe's Menu Items")                        
+            for(food in joesMenu)
+            document.write("<br>"+ food + "  $" + joesMenu[food])                
+        }
+        
+        displayJSON();
+
+        // function object and display using array of instances to represent the menu items
+        function JoeMenu(food,prc){
+            this.food = food;
+            this.price = prc;
+            this.show = function(){return this.food + " $" + this.price}
+        }
+
+        food1 = new JoeMenu("hotdog", 4)
+        food2 = new JoeMenu("fries", 3.5)
+        food3 = new JoeMenu("soda", 1.5)
+        food4 = new JoeMenu("sauerkraut", 1)
+
+        //or
+        collection = [new JoeMenu("hotdog",4), new JoeMenu("fries",3.5), new JoeMenu("soda",1.5), new JoeMenu("sauerkraut",1)]        
+
+        function displayFunctionObject1() {                                    
+            document.write(food1.show()+"<br>")
+            document.write(food2.show()+"<br>")
+            document.write(food3.show()+"<br>")
+            document.write(food4.show()+"<br>")    
+        }
+        document.write("<br><br>"+"Display using the array of objects "+"<br>"+"Joe's Menu Items"+"<br>")
+        displayFunctionObject1();
+
+        // using .map() 
+
+        function displayFunctionObject2() {
+            document.write("<br><br>"+"Display using the array of objects using map "+"<br>"+"Joe's Menu Items"+"<br>")        
+            document.write(collection.map(food => food.show()).join("<br>"));            
+        }
+
+        displayFunctionObject2();
+                
+        </script>
+    
+</body>
+</html>

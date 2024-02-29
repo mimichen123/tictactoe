@@ -1,0 +1,209 @@
+<html>
+    <title>Joe's Hotdogs</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <head>       
+    </head>
+    <body>
+        <script>
+
+        // associate array of items and prices            
+/*          
+           var menu =[]
+            menu["hotdog"] = 4
+            menu["fries"] = 3.5
+            menu["soda"] = 1.5
+            menu["sauerkraut"] =1
+  
+*/
+
+       // a simple object
+
+            var menu = {
+                hotdog: 4,
+                fries: 3.5,
+                soda: 1.5,
+                sauerkraut: 1
+            }
+    
+/*
+        // JSON object 
+        var joesMenu =
+            {
+                "hotdogs" : 4,
+                "fries" : 3.5,
+                "soda" : 1.5,
+                "sauerkraut" : 1
+            }
+        
+        // Function to display using the JSON object
+        function displayJSON() {
+            document.write("Display using JSON Object"+"<br>"+"Joe's Menu Items")                        
+            for(food in joesMenu)
+            document.write("<br>"+ food + "  $" + joesMenu[food])                
+        }
+        
+        displayJSON();
+*/
+        // function object and display using array of objects
+        function JoeMenu(food,prc){
+            this.food = food;
+            this.price = prc;
+            this.show = function(){return this.food + " $" + this.price}
+        }
+
+        food1 = new JoeMenu("hotdog", 4.00)
+        food2 = new JoeMenu("fries", 3.50)
+        food3 = new JoeMenu("soda", 1.50)
+        food4 = new JoeMenu("sauerkraut", 1.00)
+
+        //or
+        collection = [new JoeMenu("hotdog",4.00), new JoeMenu("fries",3.5), new JoeMenu("soda",1.5), new JoeMenu("sauerkraut",1)]        
+/*
+        function displayFunctionObject1() {                                    
+            document.write(food1.show()+"<br>")
+            document.write(food2.show()+"<br>")
+            document.write(food3.show()+"<br>")
+            document.write(food4.show()+"<br>")    
+        }
+        document.write("<br><br>"+"Display using the array of objects "+"<br>"+"<br>"+"Joe's Menu Items"+"<br>")
+        displayFunctionObject1();
+*/
+        function displayFunctionObject2() {
+            document.write("Joe's Menu Items"+"<br>")        
+            document.write(collection.map(food => food.show()).join("<br>"));            
+        }
+
+        displayFunctionObject2();        
+        
+        //create an associative array where keys are menu items and values will be quanities
+        //initialize the array with the menu items and a quanity of 0        
+        
+
+        var inventory =[]
+        inventory["hotdog"] = 0
+        inventory["fries"] = 0
+        inventory["soda"] = 0
+        inventory["sauerkraut"] =0
+
+        /*  
+        var inventory = {
+            hotdog: 0,
+            fries: 0,
+            soda: 0,
+            sauerkraut: 0
+        } ;     
+  */  
+       
+        cart = [];
+        function addToCart(){
+                        
+            var foodName = document.getElementById("foodItem").value.trim().toLowerCase();
+       
+            if(foodName in menu){
+            addInventory(foodName,1);            
+                   }
+                   else 
+                   {
+                    document.getElementById("foodItem").value="";
+                    alert("not found, please add menu items only")                    
+                   }        
+        }   
+
+        function addInventory(food,num){
+         
+            inventory[food] += num;
+            show_cart();            
+        }
+        
+        function show_cart(){
+            var cartTotals = "";
+            for(food in inventory)
+            if(inventory[food]>0){
+            cartTotals += food+ ": " + inventory[food] +"x"+"<br>";
+            
+            }
+            console.log(cartTotals)        
+            console.log(inventory);
+
+            document.getElementById("shopping_cart").innerHTML= cartTotals;
+        }
+            
+    function addOrder(){
+            var orderTotal = 0;
+            var confirmOrder = "";
+
+            for(item in inventory){
+                if(inventory[item]>0){
+                    var itemCost = menu[item] * inventory[item];
+                    orderTotal += itemCost;                                   
+                    confirmOrder += "  " + item + ": " + inventory[item] + " x $" + menu[item] + " = $" + itemCost.toFixed(2)  +"\n";                    
+                }
+            console.log(itemCost)
+            console.log(confirmOrder) 
+            }
+            console.log(confirmOrder + " and the grand total is: " +orderTotal)
+            alert(confirmOrder + "\nAnd the grand total for the order is: $" + orderTotal.toFixed(2) )
+            
+            cartTotals = "";       
+            reset_inventory();        
+            document.getElementById("shopping_cart").innerHTML="Shopping cart cleared! Enter your order from the menu."+ "<br>"; 
+            document.getElementById("foodItem").value="";
+            console.log(cartTotals)
+            
+        }
+    
+        function reset_inventory(){
+            
+            for(item in inventory){
+                if(inventory[item]>0){
+                        inventory[item] = 0;                        
+                    }                
+            }
+            console.log(inventory)
+        }
+
+        function checkOut(){
+            var checkout = false;    
+            
+            for(item in inventory){
+                if(inventory[item]>0){
+                    checkout = true;
+                    break;
+                }}
+
+                if(checkout){
+                    addOrder();
+                }
+                else {
+                    alert("Shopping cart is cleared. Enter your next order from the menu.");
+                    
+                }
+            }        
+        </script>
+
+    <br><br>
+    What would you like to order from the menu above?
+    <br><br>
+    <form id="order-form">
+        <fieldset>
+            <legend>Your Order</legend>        
+    <input type ="text" placeholder="Enter food here" id="foodItem" name="foodItem">
+    <br><br>
+    <input type="button" value="add to cart" id="atc">
+    <br><br>
+    <fieldset><legend>Shopping Cart</legend>
+    <div id="shopping_cart"></div>
+    </fieldset>
+    <br>
+    <input type="button" value="checkout" id="checkout">
+    
+    <br>    
+    </fieldset>
+    </form>
+    <script>
+    document.getElementById("atc").addEventListener("click",addToCart);
+    document.getElementById("checkout").addEventListener("click",checkOut);
+</script>
+</body>
+</html>
